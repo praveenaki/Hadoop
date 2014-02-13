@@ -1,0 +1,17 @@
+Input Data Set: {(host:chararray,delay:long)}
+
+Problem: Find top 100 delays on each host
+
+Hint: Use Nested Foreach
+
+a = LOAD 'Data Set';
+
+grpd = order a by host; //grpd has group:chararray(server) , a:databag
+
+top100 = foreach grpd{ //each line in grpd relation has a inner relation named a (subset of a which have same server)
+	sorted = order a by delay desc;
+	limited = limit sorted 100;
+	generate group, limited;
+};
+
+dump top100;
